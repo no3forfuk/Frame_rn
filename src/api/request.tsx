@@ -26,7 +26,9 @@ const _fetch = (data: FetchData) => {
         // storage.clearSession()
         window.location.hash = ''
         window.location.href = '/#/login'
-        return
+        return new Promise((resolve, reject) => {
+            reject()
+        })
     }
     let baseHeaders = {
         'Content-Type': 'application/json; charset=utf-8',
