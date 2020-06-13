@@ -1,5 +1,4 @@
 import Login from '../pages/login'
-import Loading from '../pages/loading'
 import App from '../App'
 import React from "react";
 
@@ -23,10 +22,7 @@ const routes: Array<route> = [
         path: "/",
         component: App,
         exact: true,
-        routes: [{
-            path: "/loading",
-            component: Loading,
-        }]
+        routes: []
     },
     {
         path: "*",

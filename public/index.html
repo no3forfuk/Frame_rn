@@ -7,35 +7,9 @@
     <meta name="theme-color" content="#000000"/>
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
     <title>React App</title>
-    <style>
-        #streamingVideo {
-            width: 100vw;
-            height: 100vh;
-            object-fit: contain;
-        }
-    </style>
-    <script>
-        function setRem() {
-            let designSize = 1920; // 设计图尺寸
-
-            let html = document.documentElement;
-
-            let wW = html.clientWidth;// 窗口宽度
-            let rem = wW * 100 / designSize;
-            // console.log(rem);
-            document.documentElement.style.fontSize = rem + 'px'
-        }
-
-        window.onload = function () {
-            setRem()
-        }
-        window.onresize = function () {
-            setRem()
-        }
-    </script>
+    <srcipt src="/config.js"></srcipt>
 </head>
 <body>
 <div id="root"></div>
-<script src="/superAPI-2.7.0.min.js"></script>
 </body>
 </html>

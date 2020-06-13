@@ -31,7 +31,7 @@ interface LooseObject {
 
 const moduleListCopy: LooseObject = {}
 
-const getApiUrl = (url: string, apiParam: ApiParam) => {
+const getApiUrl = (url: string, apiParam: ApiParam = {}) => {
     const {path, query} = apiParam
     let result = url
     if (path && path.length > 0) {
@@ -59,7 +59,7 @@ const createApiFoo = () => {
             if (k === 'name') {
 
             } else {
-                moduleListCopy[module.name][k] = (params: RequestParam) => {
+                moduleListCopy[module.name][k] = (params: RequestParam = {}) => {
                     return _fetch({
                         url: getApiUrl(module[k].url, params),
                         method: module[k].method,

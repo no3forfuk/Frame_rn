@@ -11,7 +11,8 @@
 # production
 /build
 /node_modules
-
+/server
+/src/setupProxy.js
 
 # misc
 .DS_Store
