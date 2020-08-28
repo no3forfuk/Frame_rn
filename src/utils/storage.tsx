@@ -1,41 +1,43 @@
 class Storage {
-
     setSession<T>(key: string, value: T): void {
-        if (typeof value === 'string') {
-            sessionStorage.setItem(key, value)
+        if (typeof value === "string") {
+            sessionStorage.setItem(key, `"${value}"`)
         } else {
             sessionStorage.setItem(key, JSON.stringify(value))
         }
     }
 
-    getSession = (key: string): string | { [key: string]: any } | undefined => {
-        let ret = sessionStorage.getItem(key)
+    getSession = (key: string): string | {[key: string]: any} => {
+        const ret = sessionStorage.getItem(key) || ""
         if (ret) {
             try {
-                return JSON.parse(ret)
+                const result = JSON.parse(ret)
+                return result
             } catch (e) {
-                throw e
+                return ret
             }
         }
+        return ""
     }
 
     setLocal<T>(key: string, value: T): void {
-        if (typeof value === 'string') {
+        if (typeof value === "string") {
             localStorage.setItem(key, value)
         } else {
             localStorage.setItem(key, JSON.stringify(value))
         }
     }
 
-    getLocal = (key: string): string | { [key: string]: any } | undefined => {
-        let ret = localStorage.getItem(key)
+    getLocal = (key: string): string | {[key: string]: any} => {
+        const ret = localStorage.getItem(key)
         if (ret) {
             try {
                 return JSON.parse(ret)
             } catch (e) {
-                throw e
+                return ret
             }
         }
+        return ""
     }
 
     clearSession(key?: string | undefined): void {
@@ -53,8 +55,6 @@ class Storage {
             localStorage.clear()
         }
     }
-
-
 }
 
 export default Storage

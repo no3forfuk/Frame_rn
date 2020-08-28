@@ -1,21 +1,20 @@
-import {combineReducers} from 'redux';
+import {combineReducers} from "redux"
 
 interface action {
-    type: string,
+    type: string
     data?: any
 }
 
 const login = (state: {} = {}, action: action) => {
     switch (action.type) {
-        case 'LOGIN':
+        case "LOGIN":
             return {
-                ...action.data,
-            };
-            break;
+                ...action.data
+            }
         default:
-            return state;
+            return state
     }
 }
 export default combineReducers({
     login
-});
+})

@@ -1,18 +1,17 @@
-import permission from './permission'
-import searchImg from './searchImg'
-import _fetch from './request'
-
+import permission from "./permission"
+import searchImg from "./searchImg"
+import _fetch from "./request"
 
 interface Module {
-    name: string,
+    name: string
 
     [api: string]: any
 }
 
 interface ApiParam {
-    path?: Array<string>,
-    query?: Object,
-    data?: Object,
+    path?: Array<string>
+    query?: Object
+    data?: Object
     headers?: Object
 }
 
@@ -20,10 +19,7 @@ interface RequestParam {
     [api: string]: any
 }
 
-const moduleList: Array<Module> = [
-    permission,
-    searchImg
-]
+const moduleList: Array<Module> = [permission, searchImg]
 
 interface LooseObject {
     [key: string]: any
@@ -35,29 +31,31 @@ const getApiUrl = (url: string, apiParam: ApiParam = {}) => {
     const {path, query} = apiParam
     let result = url
     if (path && path.length > 0) {
-        result = url + path.join('/')
+        result = url + path.join("/")
     }
     if (query && Object.keys(query).length > 0) {
-        let arr = [], queryStr = '';
-        for (let k in query) {
+        // eslint-disable-next-line prefer-const
+        let arr = [],
+            queryStr = ""
+        for (const k in query) {
             if (k) {
                 // @ts-ignore
-                arr.push(`${k}=${query[k]}`);
+                arr.push(`${k}=${query[k]}`)
             }
         }
         if (arr.length > 0) {
-            queryStr = '?' + arr.join('&')
+            queryStr = "?" + arr.join("&")
         }
         result = result + queryStr
     }
     return result
 }
 const createApiFoo = () => {
-    moduleList.map((module: Module) => {
+    moduleList.forEach((module: Module) => {
         moduleListCopy[module.name] = {}
-        for (let k in module) {
-            if (k === 'name') {
-
+        for (const k in module) {
+            // eslint-disable-next-line no-empty
+            if (k === "name") {
             } else {
                 moduleListCopy[module.name][k] = (params: RequestParam = {}) => {
                     return _fetch({
@@ -74,6 +72,5 @@ const createApiFoo = () => {
     })
 }
 createApiFoo()
-export const Permission = moduleListCopy['permission']
-export const SearchImg = moduleListCopy['searchImg']
-
+export const Permssion = moduleListCopy["permission"]
+export const SearchImg = moduleListCopy["searchImg"]

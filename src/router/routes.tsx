@@ -1,18 +1,7 @@
-import Login from '../pages/login'
-import App from '../App'
-import React from "react";
+import Login from "../pages/login"
+import App from "../App"
 
-interface route {
-    path: string,
-    component: React.ReactElement<any, string | React.JSXElementConstructor<any>> | string | number | {} | React.ReactNodeArray | React.ReactPortal | boolean | null | undefined,
-    routes: Array<{
-        path: string;
-        component: React.ReactElement,
-    }>,
-    exact?: boolean
-}
-
-const routes: Array<route> = [
+const routes = [
     {
         path: "/login",
         component: Login,
@@ -28,6 +17,6 @@ const routes: Array<route> = [
         path: "*",
         component: Login,
         routes: []
-    },
+    }
 ]
 export default routes

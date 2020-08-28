@@ -1,95 +1,97 @@
-import {storage} from "../utils";
+import {storage} from "../utils"
 
 window.countRequest = 0
 
 interface FetchData {
-    headers?: {},
-    method: string,
-    body?: {},
-    url: string,
-    isFormData?: boolean,
-    userId?: string,
+    headers?: {}
+    method: string
+    body?: {}
+    url: string
+    isFormData?: boolean
+    userId?: string
     pwd?: string
 }
 
 interface Response {
-    code: number,
-    data: any,
+    code: number
+    data: any
     msg: string
 }
 
 const _fetch = (data: FetchData) => {
-    const userId = storage.getSession('userId') || data.userId;
-    const token = storage.getSession('token');
-    const pwd = storage.getSession('pwd') || data.pwd;
+    const userId = storage.getSession("userId") || data.userId
+    const token = storage.getSession("token")
+    const pwd = storage.getSession("pwd") || data.pwd
     if (!userId) {
         // storage.clearSession()
-        window.location.hash = ''
-        window.location.href = '/#/login'
+        window.location.hash = ""
+        window.location.href = "/#/login"
         return new Promise((resolve, reject) => {
             reject()
         })
     }
-    let baseHeaders = {
-        'Content-Type': 'application/json; charset=utf-8',
-        'appId': userId,
-        'appKey': pwd,
-        'iot-token': token,
+    const baseHeaders = {
+        "Content-Type": "application/json; charset=utf-8",
+        appId: userId,
+        appKey: pwd,
+        "iot-token": token
     }
     const options: any = {
         headers: {
-            'Content-Type': ''
+            "Content-Type": ""
         },
-        method: 'get',
+        method: "get"
     }
-    let {headers, method, body, url, isFormData} = data
+    const {headers, method, body, url, isFormData} = data
     options.method = method
     options.headers = Object.assign(baseHeaders, headers)
 
-    if (method.toLowerCase() === 'get') {
-
+    if (method.toLowerCase() === "get") {
+        return
     } else {
         if (isFormData) {
             options.body = body
-            delete options.headers['Content-Type']
+            delete options.headers["Content-Type"]
         } else {
             options.body = JSON.stringify(body)
         }
-
     }
     return new Promise((resolve, reject) => {
-        fetch(url, options).then(res => {
-            let tk = res.headers.get('iot-token')
-            if (tk) {
-                storage.setSession('token', tk)
-            }
-            return res.json()
-        }).then((res: Response) => {
-            if (res.code === -10020) {
-                window.countRequest = window.countRequest + 1
-                if (window.countRequest > 4) {
-                    return;
-                } else {
-                    //@ts-ignore
-                    _fetch(data).then((res: Response) => {
-                        if (res.code === 0) {
-                            resolve(res)
-                        } else {
-                            reject(res)
-                        }
-                    })
+        fetch(url, options)
+            .then((res) => {
+                const tk = res.headers.get("iot-token")
+                if (tk) {
+                    storage.setSession("token", tk)
                 }
-            } else if (res.code === 0) {
-                window.countRequest = 0
-                resolve(res)
-            } else {
-                window.countRequest = 0
-                reject()
-            }
-        }).catch(err => {
-            throw err
-            reject()
-        })
+                return res.json()
+            })
+            .then((res: Response) => {
+                if (res.code === -10020) {
+                    window.countRequest = window.countRequest + 1
+                    if (window.countRequest > 9) {
+                        return
+                    } else {
+                        //@ts-ignore
+                        _fetch(data).then((res: Response) => {
+                            if (res.code === 0) {
+                                resolve(res)
+                            } else {
+                                reject(res)
+                            }
+                        })
+                    }
+                } else if (res.code === 0) {
+                    window.countRequest = 0
+                    resolve(res)
+                } else {
+                    window.countRequest = 0
+                    reject(res)
+                }
+            })
+            .catch((err) => {
+                reject(err)
+                throw err
+            })
     })
 }
 

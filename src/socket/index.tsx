@@ -1,26 +1,24 @@
-import SOCKET from './socket'
-
+import SOCKET from "./socket"
 
 interface SocketConf {
-    url: string,
+    url: string
 
-    onOpen?(): void,
+    onOpen?(): void
 
-    onMessage?(data: any): void,
+    onMessage?(data: any): void
 
-    onError?(): void,
+    onError?(): void
 
     onClose?(): void
 }
 
 class websocket {
-
-    constructor(socketConf: { onMessage(message: {}): void; url: string }) {
+    constructor(socketConf: {onMessage(message: {}): void; url: string}) {
         this.url = socketConf.url
         this.socketConf = socketConf
     }
 
-    private url: string = ''
+    private url: string = ""
     private taskRemindInterval: any = null
     private instence: any = null
     private socketConf: SocketConf
@@ -35,11 +33,11 @@ class websocket {
         this.instence.connection()
     }
     public socketMessage = (receive: MessageEvent) => {
-        console.log(receive);
-        if (receive && receive.data !== 'pong') {
-            console.log('receive', receive);
+        console.log(receive)
+        if (receive && receive.data !== "pong") {
+            console.log("receive", receive)
             if (receive) {
-                if (receive.data !== 'pong') {
+                if (receive.data !== "pong") {
                     const {onMessage} = this.socketConf
                     onMessage && onMessage(receive.data)
                 }
@@ -47,17 +45,14 @@ class websocket {
         }
     }
     public socketError = () => {
-        clearInterval(this.taskRemindInterval);
-
+        clearInterval(this.taskRemindInterval)
     }
     public socketOpen = () => {
         this.taskRemindInterval = setInterval(() => {
-            this.instence.sendMessage('ping')
+            this.instence.sendMessage("ping")
         }, 2000)
     }
-    private close = () => {
-
-    }
+    private close = () => {}
 }
 
 export default websocket
