@@ -1,7 +1,7 @@
 export default {
-    name: 'searchImg',
+    name: "searchImg",
     getProperties: {
-        method: 'GET',
-        url: '/searchImg/v1.0.0/properties/'
+        method: "GET",
+        url: "/searchImg/v1.0.0/properties/"
     }
 }
